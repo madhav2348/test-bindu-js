@@ -1,5 +1,5 @@
 {
-  "name": "@bindu-js/sdk",
+  "name": "@bindu/sdk",
   "version": "0.1.0",
   "description": "TypeScript SDK for Bindu",
     "scripts": {
