@@ -1,6 +1,8 @@
+import { BinduConfig } from "../config";
+
 export type BindufyType = {
-  config: Record<string, any>; // bindufy config
-  run_server: boolean; // true
-  key_dir: string; // | Path /// dk path
-  launch: boolean; // false
+  config: BinduConfig; // validated bindufy config
+  run_server?: boolean; // default true
+  key_dir?: string | null; // path where keys live
+  launch?: boolean; // default false
 };

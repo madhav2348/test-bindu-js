@@ -1,42 +1,77 @@
+// TODO: remove commented types later
+
 export interface BinduConfig {
-  /**
-     * 
-     * 
-     * - author: Agent author email (required for Hibiscus registration)
-            - name: Human-readable agent name
-            - id: Unique agent identifier (optional, auto-generated if not provided)
-            - description: Agent description
-            - version: Agent version string (default: "1.0.0")
-            - recreate_keys: Force regeneration of existing keys (default: True)
-            - skills: List of agent skills/capabilities
-            - env_file: Path to .env file (optional, for local development)
-            - capabilities: Technical capabilities (streaming, notifications, etc.)
-            - agent_trust: Trust and security configuration
-            - kind: Agent type ('agent', 'team', or 'workflow') (default: "agent")
-            - debug_mode: Enable debug logging (default: False)
-            - debug_level: Debug verbosity level (default: 1)
-            - monitoring: Enable monitoring/metrics (default: False)
-            - telemetry: Enable telemetry collection (default: True)
-            - num_history_sessions: Number of conversation histories to maintain (default: 10)
-            - documentation_url: URL to agent documentation
-            - extra_metadata: Additional metadata dictionary
-            - deployment: Deployment configuration dict
-            - storage: Storage backend configuration dict
-            - scheduler: Task scheduler configuration dict
-            - global_webhook_url: Default webhook URL for all tasks (optional)
-            - global_webhook_token: Authentication token for global webhook (optional)
-     */
+  author: string; // required for Hibiscus registration
+  name: string; // human-readable agent name
+  id?: string; // optional unique identifier
+  description?: string;
+  version?: string; // defaults to 1.0.0 in the backend
+  recreate_keys?: boolean; // force regeneration of existing keys
+  skills?: string[]; // e.g. ["skills/question-answering"]
+  env_file?: string; // path to .env for local dev
+//   capabilities?: CapabilitiesConfig; // streaming / notifications etc
+//   agent_trust?: AgentTrustConfig; // trust and security knobs
+  kind?: "agent" | "team" | "workflow"; // default: agent
+  debug_mode?: boolean;
+  debug_level?: number; // default: 1
+  monitoring?: boolean;
+  telemetry?: boolean; // default: true
+  num_history_sessions?: number; // default: 10
+  documentation_url?: string;
+  extra_metadata?: Record<string, unknown>;
+  deployment?: DeploymentConfig;
+ 
+//   storage?: StorageConfig;
+//   scheduler?: SchedulerConfig;
+  global_webhook_url?: string;
+  global_webhook_token?: string;
 }
 
-export interface AgentSkill {}
+export interface AgentExtension {
+  uri: string; // URI of the extension
+  description?: string; // how the agent uses this extension
+  required?: boolean; // whether clients must follow specific requirements
+  params?: Record<string, unknown>; // optional configuration
+}
+
+// export interface AgentCapabilities {
+//   extensions?: AgentExtension[]; // list of extensions supported by the agent
+//   push_notifications?: boolean; // supports push notifications
+//   state_transition_history?: boolean; // supports state transition history
+//   streaming?: boolean; // supports streaming
+
+// }
+
+// export interface AgentTrustConfig {
+//   allow_insecure_tools?: boolean;
+//   trusted_providers?: string[];
+//   [rule: string]: unknown;
+// }
 
 export interface DeploymentConfig {
-  readonly url: string;
-  readonly expose: string;
-  readonly protocol_version: string;
-  readonly proxy_url: string[] | null;
-  readonly cors_origin: string[] | null;
-  readonly openapi_schema: string | null;
+  url: string;
+  expose?: boolean;
+  protocol_version?: string;
+  proxy_url?: string[] | null;
+  cors_origin?: string[] | null;
+  openapi_schema?: string | null;
 }
 
+// export interface StorageConfig {
+//   type: "postgres" | "memory";
+//   database_url?: string | null;
+// }
+
+// export interface SchedulerConfig {
+//   type: "redis" | "memory";
+//   redis_url?: string | null;
+//   redis_host?: string;
+//   redis_port?: number;
+//   redis_password?: string | null;
+//   redis_db?: number;
+//   queue_name?: string;
+//   max_connections?: number;
+//   retry_on_timeout?: boolean;
+//   poll_timeout?: number;
+// }
 
