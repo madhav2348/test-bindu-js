@@ -1,19 +1,17 @@
 {
   "name": "bindu-js",
+  "private": true,
   "version": "0.1.0",
-  "description": "TypeScript SDK for Bindu",
-    "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
-    "test": "vitest",
-    "lint": "eslint src --ext .ts",
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {},
-  "devDependencies": {
-    "typescript": "^5.4.0",
-    "vitest": "^1.0.0",
-    "@types/node": "^20.0.0"
-  },
-  "keywords": ["bindu", "a2a", "agent", "sdk", "typescript"]
+  "description": "Monorepo root for bindu JS SDK",
+  "packageManager": "pnpm@8.15.6",
+  "workspaces": [
+    "package"
+  ],
+  "scripts": {
+    "build": "pnpm --filter @bindu-js/sdk build",
+    "dev": "pnpm --filter @bindu-js/sdk dev",
+    "test": "pnpm --filter @bindu-js/sdk test",
+    "lint": "pnpm --filter @bindu-js/sdk lint",
+    "typecheck": "pnpm --filter @bindu-js/sdk typecheck"
+  }
 }

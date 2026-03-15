@@ -16,6 +16,18 @@
 
 ## Goal
 
+## Supported AI Frameworks
+
+`bindufy()` is framework-agnostic. Put anything inside your handler:
+
+| Framework | Install | Example |
+|---|---|---|
+| **Vercel AI SDK** | `npm i ai @ai-sdk/openai` |
+| **Mastra** | `npm i @mastra/core` |
+| **LangChain.js** | `npm i langchain @langchain/openai @langchain/langgraph` | 
+ Any fetch-based call | — | Just call any API in your handler |
+
+
 ### Vecel AI sdk 
 ``` ts
 import { bindufy } from "../src/server/index.js";
