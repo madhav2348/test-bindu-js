@@ -1,4 +1,4 @@
-import { BinduConfig } from "../config";
+import { BinduConfig } from "../utils/config";
 
 // Options bag keeps client code ergonomic: bindufy(cfg, handler, { launch: true })
 export function bindufy<T>(
@@ -11,6 +11,7 @@ export function bindufy<T>(
   } = {},
 ) {
   const { runServer = true, keyDir = null, launch = true } = options;
+  
 
 
 }
