@@ -1,5 +1,9 @@
 import { JsonRpcResponse } from "../client/json-rpc";
 
+export type JsonRpcMethodInput<TParams> = TParams & {
+  id: string;
+};
+
 export interface MessagePart {
   kind: "text";
   text: string;

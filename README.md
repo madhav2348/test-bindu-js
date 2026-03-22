@@ -15,6 +15,67 @@
 ```
 
 ## Goal
+Build a TypeScript SDK 
+What is built:
+
+- `JsonRpcClient` -  JSON-RPC methods i.e `message/send`, `tasks/`, and `contexts/`
+- `AgentClient` - `/.well-known/agent.json`
+- `DidClient` - `/did/resolve`
+- `MonitoringClient` - `/health` and `/metrics`
+- `NegotiationClient` - `/agent/negotiation`
+- `PaymentClient` - payment session, payment status, and payment capture 
+- `SkillsClient` - skill listing, skill details, and skill documentation
+
+Simple example:
+
+```ts
+import { BinduClient } from "@bindu/core";
+
+const client = new BinduClient({
+  apiKey: "<token>",
+  baseUrl: "http://localhost:3773/",
+});
+
+const agent = await client.getAgent();
+```
+
+JSON-RPC :
+
+```ts
+const response = await client.jsonRpc().sendMessage(
+  {
+    id: "550e8400-e29b-41d4-a716-446655440024",
+    message: {
+      role: "user",
+      kind: "message",
+      messageId: "550e8400-e29b-41d4-a716-446655440038",
+      contextId: "550e8400-e29b-41d4-a716-446655440038",
+      taskId: "550e8400-e29b-41d4-a716-446655440078",
+      parts: [{ kind: "text", text: "provide sunset quote" }],
+    },
+    configuration: {
+      acceptedOutputModes: ["application/json"],
+    },
+  },
+);
+
+```
+
+Monitoring :
+
+```ts
+const health = await client.health();
+const metrics = await client.metrics();
+
+```
+
+Skills :
+
+```ts
+const skills = await client.listSkills();
+const skill = await client.getSkill({ skillId: "pdf-processing-v1" });
+
+```
 <!-- 
 ## Supported AI Frameworks
 

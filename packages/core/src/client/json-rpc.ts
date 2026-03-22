@@ -12,6 +12,7 @@ import {
   GetTaskParams,
   GetTaskResponse,
   GetTaskResult,
+  JsonRpcMethodInput,
   ListContextsParams,
   ListContextsResponse,
   ListContextsResult,
@@ -137,92 +138,90 @@ export class JsonRpcClient {
   }
 
   async sendMessage(
-    params: SendMessageParams,
-    id: string,
+    input: JsonRpcMethodInput<SendMessageParams>,
   ): Promise<SendMessageResponse> {
+    const { id, ...params } = input;
     return this.request<SendMessageParams, SendMessageResult>(
       RpcMethod.MessageSend,
-      params,
+      params as SendMessageParams,
       id,
     );
   }
 
   async sendMessageWithPayment(
-    params: SendMessageParams,
-    id: string,
+    input: JsonRpcMethodInput<SendMessageParams>,
   ): Promise<SendMessageResponse> {
-    return this.sendMessage(params, id);
+    return this.sendMessage(input);
   }
 
   async sendMessageWithReference(
-    params: SendMessageParams,
-    id: string,
+    input: JsonRpcMethodInput<SendMessageParams>,
   ): Promise<SendMessageResponse> {
-    return this.sendMessage(params, id);
+    return this.sendMessage(input);
   }
 
   async getTask(
-    params: GetTaskParams,
-    id: string,
+    input: JsonRpcMethodInput<GetTaskParams>,
   ): Promise<GetTaskResponse> {
+    const { id, ...params } = input;
     return this.request<GetTaskParams, GetTaskResult>(
       RpcMethod.TasksGet,
-      params,
+      params as GetTaskParams,
       id,
     );
   }
 
   async listTasks(
-    params: ListTasksParams = {},
-    id: string,
+    input: JsonRpcMethodInput<ListTasksParams>,
   ): Promise<ListTasksResponse> {
+    const { id, ...params } = input;
     return this.request<ListTasksParams, ListTasksResult>(
       RpcMethod.TasksList,
-      params,
+      params as ListTasksParams,
       id,
     );
   }
 
   async cancelTask(
-    params: CancelTaskParams,
-    id: string,
+    input: JsonRpcMethodInput<CancelTaskParams>,
   ): Promise<CancelTaskResponse> {
+    const { id, ...params } = input;
     return this.request<CancelTaskParams, CancelTaskResult>(
       RpcMethod.TasksCancel,
-      params,
+      params as CancelTaskParams,
       id,
     );
   }
 
   async submitTaskFeedback(
-    params: SubmitTaskFeedbackParams,
-    id: string,
+    input: JsonRpcMethodInput<SubmitTaskFeedbackParams>,
   ): Promise<SubmitTaskFeedbackResponse> {
+    const { id, ...params } = input;
     return this.request<SubmitTaskFeedbackParams, SubmitTaskFeedbackResult>(
       RpcMethod.TasksFeedback,
-      params,
+      params as SubmitTaskFeedbackParams,
       id,
     );
   }
 
   async listContexts(
-    params: ListContextsParams,
-    id: string,
+    input: JsonRpcMethodInput<ListContextsParams>,
   ): Promise<ListContextsResponse> {
+    const { id, ...params } = input;
     return this.request<ListContextsParams, ListContextsResult>(
       RpcMethod.ContextsList,
-      params,
+      params as ListContextsParams,
       id,
     );
   }
 
   async clearContext(
-    params: ClearContextParams,
-    id: string,
+    input: JsonRpcMethodInput<ClearContextParams>,
   ): Promise<ClearContextResponse> {
+    const { id, ...params } = input;
     return this.request<ClearContextParams, ClearContextResult>(
       RpcMethod.ContextsClear,
-      params,
+      params as ClearContextParams,
       id,
     );
   }
