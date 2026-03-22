@@ -5,22 +5,6 @@ import { MonitoringClient } from "./monitoring";
 import { NegotiationClient } from "./negotiation";
 import { PaymentClient } from "./payment";
 import { SkillsClient } from "./skills";
-import {
-  AgentCard,
-  GetPaymentStatusParams,
-  GetSkillParams,
-  ListSkillsResponse,
-  HealthResponse,
-  MetricsResponse,
-  NegotiationRequest,
-  NegotiationResponse,
-  PaymentCaptureResponse,
-  PaymentStatusResponse,
-  ResolveDidParams,
-  SkillDetail,
-  SkillDocumentationResponse,
-  StartPaymentSessionResponse,
-} from "../types";
 
 export interface BinduClientConfig {
   apiKey: string;
@@ -29,13 +13,13 @@ export interface BinduClientConfig {
 }
 
 export class BinduClient {
-  private readonly agentClient: AgentClient;
-  private readonly didClient: DidClient;
-  private readonly monitoringClient: MonitoringClient;
-  private readonly negotiationClient: NegotiationClient;
-  private readonly paymentClient: PaymentClient;
-  private readonly skillsClient: SkillsClient;
-  private readonly rpcClient: JsonRpcClient;
+  readonly agent: AgentClient;
+  readonly did: DidClient;
+  readonly monitoring: MonitoringClient;
+  readonly negotiation: NegotiationClient;
+  readonly payment: PaymentClient;
+  readonly skills: SkillsClient;
+  readonly jsonRpc: JsonRpcClient;
 
   constructor(config: BinduClientConfig) {
     const apiKey = config.apiKey;
@@ -47,94 +31,42 @@ export class BinduClient {
       baseUrl,
     };
 
-    this.rpcClient = new JsonRpcClient(
+    this.jsonRpc = new JsonRpcClient(
       config.fetchFn
         ? { ...transportConfig, fetchFn: config.fetchFn }
         : transportConfig,
     );
 
-    this.agentClient = new AgentClient({
+    this.agent = new AgentClient({
       baseUrl,
       fetchFn,
     });
 
-    this.didClient = new DidClient({
+    this.did = new DidClient({
       baseUrl,
       fetchFn,
     });
 
-    this.monitoringClient = new MonitoringClient({
+    this.monitoring = new MonitoringClient({
       apiKey,
       baseUrl,
       fetchFn,
     });
 
-    this.negotiationClient = new NegotiationClient({
+    this.negotiation = new NegotiationClient({
       baseUrl,
       fetchFn,
     });
 
-    this.paymentClient = new PaymentClient({
+    this.payment = new PaymentClient({
       apiKey,
       baseUrl,
       fetchFn,
     });
 
-    this.skillsClient = new SkillsClient({
+    this.skills = new SkillsClient({
       baseUrl,
       fetchFn,
     });
-  }
-
-  async jsonRpc(): Promise<JsonRpcClient> {
-    return this.rpcClient;
-  }
-
-  async metrics(): Promise<MetricsResponse> {
-    return this.monitoringClient.metrics();
-  }
-
-  async health(): Promise<HealthResponse> {
-    return this.monitoringClient.health();
-  }
-
-  async resolveDid(params: ResolveDidParams) {
-    return this.didClient.resolveDid(params);
-  }
-
-  async negotiate(params: NegotiationRequest): Promise<NegotiationResponse> {
-    return this.negotiationClient.negotiate(params);
-  }
-
-  async capturePayment(): Promise<PaymentCaptureResponse> {
-    return this.paymentClient.capture();
-  }
-
-  async getPaymentStatus(
-    params: GetPaymentStatusParams,
-  ): Promise<PaymentStatusResponse> {
-    return this.paymentClient.getPaymentStatus(params);
-  }
-
-  async startPaymentSession(): Promise<StartPaymentSessionResponse> {
-    return this.paymentClient.startPaymentSession();
-  }
-
-  async getAgent(): Promise<AgentCard> {
-    return this.agentClient.getAgent();
-  }
-
-  async listSkills(): Promise<ListSkillsResponse> {
-    return this.skillsClient.listSkills();
-  }
-
-  async getSkill(params: GetSkillParams): Promise<SkillDetail> {
-    return this.skillsClient.getSkill(params);
-  }
-
-  async getSkillDocumentation(
-    params: GetSkillParams,
-  ): Promise<SkillDocumentationResponse> {
-    return this.skillsClient.getSkillDocumentation(params);
   }
 }

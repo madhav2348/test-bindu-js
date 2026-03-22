@@ -36,13 +36,13 @@ const client = new BinduClient({
   baseUrl: "http://localhost:3773/",
 });
 
-const agent = await client.getAgent();
+const agent = await client.agent.getAgent();
 ```
 
 JSON-RPC :
 
 ```ts
-const response = await client.jsonRpc().sendMessage(
+const response = await client.jsonRpc.sendMessage(
   {
     id: "550e8400-e29b-41d4-a716-446655440024",
     message: {
@@ -59,21 +59,110 @@ const response = await client.jsonRpc().sendMessage(
   },
 );
 
+const task = await client.jsonRpc.getTask({
+  id: "550e8400-e29b-41d4-a716-446655440014",
+  taskId: "550e8400-e29b-41d4-a716-446655440013",
+});
+
+const tasks = await client.jsonRpc.listTasks({
+  id: "550e8400-e29b-41d4-a716-446655440099",
+});
+
+await client.jsonRpc.cancelTask({
+  id: "550e8400-e29b-41d4-a716-446655440042",
+  taskId: "550e8400-e29b-41d4-a716-446655440042",
+});
+
+await client.jsonRpc.submitTaskFeedback({
+  id: "550e8400-e29b-41d4-a716-446655440024",
+  taskId: "550e8400-e29b-41d4-a716-446655440045",
+  feedback: "Great job! The response was very helpful and accurate.",
+  rating: 5,
+  metadata: {
+    category: "quality",
+    source: "user",
+    helpful: true,
+  },
+});
+
+const contexts = await client.jsonRpc.listContexts({
+  id: "550e8400-e29b-41d4-a716-446655440025",
+  length: 10,
+});
+
+await client.jsonRpc.clearContext({
+  id: "550e8400-e29b-41d4-a716-446655440025",
+  contextId: "550e8400-e29b-41d4-a716-446655440037",
+});
 ```
 
 Monitoring :
 
 ```ts
-const health = await client.health();
-const metrics = await client.metrics();
+const health = await client.monitoring.health();
+const metrics = await client.monitoring.metrics();
 
+```
+
+Negotiation :
+
+```ts
+const negotiation = await client.negotiation.negotiate({
+  task_summary: "Extract tables and text from PDF invoices",
+  task_details:
+    "Need structured data including vendor details, totals, and line items",
+  input_mime_types: ["application/pdf"],
+  output_mime_types: ["application/json"],
+  max_latency_ms: 5000,
+  max_cost_amount: "0.001",
+  required_tools: [],
+  forbidden_tools: [],
+  min_score: 0.7,
+  weights: {
+    skill_match: 0.6,
+    io_compatibility: 0.2,
+    performance: 0.1,
+    load: 0.05,
+    cost: 0.05,
+  },
+});
+```
+
+Payment :
+
+```ts
+const session = await client.payment.startPaymentSession();
+
+const status = await client.payment.getPaymentStatus({
+  sessionId: session.sessionId,
+});
+
+const capture = await client.payment.capture();
 ```
 
 Skills :
 
 ```ts
-const skills = await client.listSkills();
-const skill = await client.getSkill({ skillId: "pdf-processing-v1" });
+const skills = await client.skills.listSkills();
+const skill = await client.skills.getSkill({ skillId: "pdf-processing-v1" });
+const docs = await client.skills.getSkillDocumentation({
+  skillId: "question-answering-v1",
+});
+
+```
+
+DID :
+
+```ts
+const didDocument = await client.did.resolveDid({
+  did: "did:bindu:gaurikasethi88_at_gmail_com:echo_agent:352c17d030fb4bf1ab33d04b102aef3d",
+});
+```
+
+Agent :
+
+```ts
+const agent = await client.agent.getAgent();
 
 ```
 <!-- 
