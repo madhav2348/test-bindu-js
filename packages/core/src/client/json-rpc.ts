@@ -32,7 +32,7 @@ import {
   NetworkError,
   TaskNotFoundError,
 } from "../utils/error";
-import { getHeader } from "../utils/http";
+import { getHeader } from "../utils/header";
 
 export enum RpcMethod {
   MessageSend = "message/send",

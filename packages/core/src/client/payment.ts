@@ -17,7 +17,7 @@ import {
   PaymentSessionError,
   PaymentStatusError,
 } from "../utils/error";
-import { getAuthHeader } from "../utils/http";
+import { getAuthHeader } from "../utils/header";
 
 export interface PaymentClientConfig {
   apiKey: string;

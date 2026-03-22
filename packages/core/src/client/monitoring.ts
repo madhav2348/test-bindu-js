@@ -5,7 +5,7 @@
 import { MetricsResponse } from "../types";
 import { HealthResponse } from "../types";
 import { NetworkError } from "../utils/error";
-import { getAuthHeader } from "../utils/http";
+import { getAuthHeader } from "../utils/header";
 
 export interface MonitoringClientConfig {
   apiKey: string;
