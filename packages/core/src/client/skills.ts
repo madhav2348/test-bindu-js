@@ -20,7 +20,15 @@ export interface SkillsClientConfig {
   fetchFn?: typeof fetch;
 }
 
-export class SkillsClient {
+export interface SkillsType {
+  listSkills(): Promise<ListSkillsResponse>;
+  getSkill(params: GetSkillParams): Promise<SkillDetail>;
+  getSkillDocumentation(
+    params: GetSkillParams,
+  ): Promise<SkillDocumentationResponse>;
+}
+
+export class SkillsClient implements SkillsType {
   private readonly baseUrl: string;
   private readonly fetchFn: typeof fetch;
 

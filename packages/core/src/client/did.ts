@@ -15,7 +15,11 @@ export interface DidClientConfig {
   fetchFn?: typeof fetch;
 }
 
-export class DidClient {
+export interface DidResolutionType {
+  resolveDid(params: ResolveDidParams): Promise<DidDocument>;
+}
+
+export class DidClient implements DidResolutionType {
   private readonly baseUrl: string;
   private readonly fetchFn: typeof fetch;
 

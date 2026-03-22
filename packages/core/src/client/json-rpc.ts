@@ -70,6 +70,41 @@ export interface JsonRpcTransportConfig {
   fetchFn?: typeof fetch;
 }
 
+export interface JsonRpcType {
+  request<TParams, TResult>(
+    method: RpcMethod,
+    params: TParams,
+    id: string,
+  ): Promise<JsonRpcResponse<TResult>>;
+  sendMessage(
+    input: JsonRpcMethodInput<SendMessageParams>,
+  ): Promise<SendMessageResponse>;
+  sendMessageWithPayment(
+    input: JsonRpcMethodInput<SendMessageParams>,
+  ): Promise<SendMessageResponse>;
+  sendMessageWithReference(
+    input: JsonRpcMethodInput<SendMessageParams>,
+  ): Promise<SendMessageResponse>;
+  getTask(
+    input: JsonRpcMethodInput<GetTaskParams>,
+  ): Promise<GetTaskResponse>;
+  listTasks(
+    input: JsonRpcMethodInput<ListTasksParams>,
+  ): Promise<ListTasksResponse>;
+  cancelTask(
+    input: JsonRpcMethodInput<CancelTaskParams>,
+  ): Promise<CancelTaskResponse>;
+  submitTaskFeedback(
+    input: JsonRpcMethodInput<SubmitTaskFeedbackParams>,
+  ): Promise<SubmitTaskFeedbackResponse>;
+  listContexts(
+    input: JsonRpcMethodInput<ListContextsParams>,
+  ): Promise<ListContextsResponse>;
+  clearContext(
+    input: JsonRpcMethodInput<ClearContextParams>,
+  ): Promise<ClearContextResponse>;
+}
+
 function createJsonRpcError(error: JsonRpcErrorObject): JsonRpcError {
   if (error.code === -32602) {
     return new InvalidParamsError(error.code, error.message, error.data);
@@ -82,7 +117,7 @@ function createJsonRpcError(error: JsonRpcErrorObject): JsonRpcError {
   return new JsonRpcError(error.code, error.message, error.data);
 }
 
-export class JsonRpcClient {
+export class JsonRpcClient implements JsonRpcType {
   private readonly apiKey: string;
   private readonly baseUrl: string;
   private readonly fetchFn: typeof fetch;

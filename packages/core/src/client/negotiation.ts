@@ -10,7 +10,11 @@ export interface NegotiationClientConfig {
   fetchFn?: typeof fetch;
 }
 
-export class NegotiationClient {
+export interface NegotiationType {
+  negotiate(params: NegotiationRequest): Promise<NegotiationResponse>;
+}
+
+export class NegotiationClient implements NegotiationType {
   private readonly baseUrl: string;
   private readonly fetchFn: typeof fetch;
 

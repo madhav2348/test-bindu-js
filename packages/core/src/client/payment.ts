@@ -25,7 +25,15 @@ export interface PaymentClientConfig {
   fetchFn?: typeof fetch;
 }
 
-export class PaymentClient {
+export interface PaymentType {
+  capture(): Promise<PaymentCaptureResponse>;
+  getPaymentStatus(
+    params: GetPaymentStatusParams,
+  ): Promise<PaymentStatusResponse>;
+  startPaymentSession(): Promise<StartPaymentSessionResponse>;
+}
+
+export class PaymentClient implements PaymentType {
   private readonly apiKey: string;
   private readonly baseUrl: string;
   private readonly fetchFn: typeof fetch;
