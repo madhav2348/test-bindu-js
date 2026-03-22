@@ -1,10 +1,10 @@
-import { AgentClient } from "./agent";
-import { JsonRpcClient } from "./json-rpc";
-import { DidClient } from "./did";
-import { MonitoringClient } from "./monitoring";
-import { NegotiationClient } from "./negotiation";
-import { PaymentClient } from "./payment";
-import { SkillsClient } from "./skills";
+import { AgentClient, AgentDiscoveryType } from "./agent";
+import { DidClient, DidResolutionType } from "./did";
+import { JsonRpcClient, JsonRpcType } from "./json-rpc";
+import { HealthAndMonitoring, MonitoringClient } from "./monitoring";
+import { NegotiationClient, NegotiationType } from "./negotiation";
+import { PaymentClient, PaymentType } from "./payment";
+import { SkillsClient, SkillsType } from "./skills";
 
 export interface BinduClientConfig {
   apiKey: string;
@@ -13,29 +13,24 @@ export interface BinduClientConfig {
 }
 
 export class BinduClient {
-  readonly agent: AgentClient;
-  readonly did: DidClient;
-  readonly monitoring: MonitoringClient;
-  readonly negotiation: NegotiationClient;
-  readonly payment: PaymentClient;
-  readonly skills: SkillsClient;
-  readonly jsonRpc: JsonRpcClient;
+  readonly agent: AgentDiscoveryType;
+  readonly did: DidResolutionType;
+  readonly monitoring: HealthAndMonitoring;
+  readonly negotiation: NegotiationType;
+  readonly payment: PaymentType;
+  readonly skills: SkillsType;
+  readonly jsonRpc: JsonRpcType;
 
   constructor(config: BinduClientConfig) {
     const apiKey = config.apiKey;
     const baseUrl = config.baseUrl ?? "http://localhost:3773/";
     const fetchFn = config.fetchFn ?? fetch;
 
-    const transportConfig = {
+    this.jsonRpc = new JsonRpcClient({
       apiKey,
       baseUrl,
-    };
-
-    this.jsonRpc = new JsonRpcClient(
-      config.fetchFn
-        ? { ...transportConfig, fetchFn: config.fetchFn }
-        : transportConfig,
-    );
+      fetchFn,
+    });
 
     this.agent = new AgentClient({
       baseUrl,
