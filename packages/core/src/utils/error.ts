@@ -90,18 +90,18 @@ export class SkillDocumentationError extends BinduError{
 export class PaymentSessionError extends BinduError{
    constructor(code: number, message: string, data?: unknown) {
     super(code, message, data);
-    this.name = "SkillDocumentationError";
+    this.name = "PaymentSessionError";
   }
 }
 export class PaymentStatusError extends BinduError{
    constructor(code: number, message: string, data?: unknown) {
     super(code, message, data);
-    this.name = "SkillDocumentationError";
+    this.name = "PaymentStatusError";
   }
 }
 export class PaymentCaptureError extends BinduError{
    constructor(code: number, message: string, data?: unknown) {
     super(code, message, data);
-    this.name = "SkillDocumentationError";
+    this.name = "PaymentCaptureError";
   }
 }
