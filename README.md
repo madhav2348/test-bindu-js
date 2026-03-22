@@ -15,7 +15,7 @@
 ```
 
 ## Goal
-
+<!-- 
 ## Supported AI Frameworks
 
 `bindufy()` is framework-agnostic. Put anything inside your handler:
@@ -234,4 +234,4 @@ bindufy(agentConfig, handler);
 ```
 
 
-
+ -->
