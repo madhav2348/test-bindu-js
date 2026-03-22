@@ -2,13 +2,14 @@
  * Decentralized Identifier resolution endpoints.
  */
 
-import { JsonRpcResponse } from "./json-rpc";
-import { DidDocument, DidResolveErrorResponse, ResolveDidParams } from "../types";
+import { JsonRpcErrorObject, JsonRpcResponse } from "./json-rpc";
 import {
-  DidResolveError,
-  JsonRpcError,
-  NetworkError,
-} from "../utils/error";
+  DidDocument,
+  DidResolveErrorResponse,
+  DidResolveJsonRpcErrorResponse,
+  ResolveDidParams,
+} from "../types";
+import { DidResolveError, NetworkError } from "../utils/error";
 
 export interface DidClientConfig {
   baseUrl: string;
@@ -42,12 +43,17 @@ export class DidClient implements DidResolutionType {
         body: JSON.stringify(params),
       });
     } catch (error) {
-      throw new NetworkError(0, "Failed to reach the DID resolve endpoint.", error);
+      throw new NetworkError(
+        0,
+        "Failed to reach the DID resolve endpoint.",
+        error,
+      );
     }
 
     const json = (await response.json()) as
       | DidDocument
       | DidResolveErrorResponse
+      | DidResolveJsonRpcErrorResponse
       | JsonRpcResponse<never>;
 
     if (!response.ok) {
@@ -60,11 +66,19 @@ export class DidClient implements DidResolutionType {
         );
       }
 
-      if ("error" in json && json.error && typeof json.error === "object") {
-        throw new JsonRpcError(
-          json.error.code,
-          json.error.message,
-          json.error.data,
+      if (
+        "jsonrpc" in json &&
+        typeof json.error === "object" &&
+        json.error !== null &&
+        "code" in json.error &&
+        "message" in json.error
+      ) {
+        const rpcError = json.error as JsonRpcErrorObject;
+
+        throw new DidResolveError(
+          rpcError.code,
+          rpcError.message,
+          rpcError.data,
         );
       }
 

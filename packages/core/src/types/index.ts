@@ -198,6 +198,16 @@ export interface DidResolveErrorResponse {
   details?: string;
 }
 
+export interface DidResolveJsonRpcErrorResponse {
+  jsonrpc: "2.0";
+  error: {
+    code: number;
+    message: string;
+    data?: unknown;
+  };
+  id: string | null;
+}
+
 export interface NegotiationWeights {
   skill_match: number;
   io_compatibility: number;
